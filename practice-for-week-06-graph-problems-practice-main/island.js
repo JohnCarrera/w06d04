@@ -27,40 +27,61 @@ function coords(row, col) {
 function getNeighbors(row, col, graph) {
   let neighbors = [];
   // Check top
-  console.log(graph[row][col]);                             // starting on a 1
-  if (graph[row - 1][col] && graph[row - 1][col] === 1) {
+                           // starting on a 1
+  if (graph[row - 1] &&graph[row - 1][col] && graph[row - 1][col] === 1) {
     neighbors.push([row - 1,col])
   }
   // check bottom
-  console.log(graph[row][col]);                             // starting on a 1
-  if (graph[row + 1][col] && graph[row + 1][col] === 1) {
+                              // starting on a 1
+  if (graph[row + 1] && graph[row + 1][col] && graph[row + 1][col] === 1) {
     neighbors.push([row + 1,col])
   }
     // check left
-  if (graph[row][col - 1] && graph[row][col - 1] === 1) {
+  if (graph[row] && graph[row][col - 1] && graph[row][col - 1] === 1) {
     neighbors.push([row,col-1])
   }
     //check right
-  if (graph[row][col + 1] && graph[row][col + 1] === 1) {
+  if (graph[row] && graph[row][col + 1] && graph[row][col + 1] === 1) {
     neighbors.push([row,col+1])
   }
+
    return neighbors
 }
 
 
 function islandSize(row, col, graph) {
   const nodes = [];
-  const addresses = new Set();
+
+
   // Create a visited set to store visited nodes
+  const visited = new Set();
+  const stack = [[row,col]]
 
   // Create a stack, put the starting node in the stack
 
   // Put the stringified starting node in visited
 
-  // Initialize size to 0
+    visited.add(coords(row, col))
 
+  // Initialize size to 0
+    let size = 0;
   // While the stack is not empty,
 
+  while(stack.length){
+    let curr = stack.pop()
+    size++
+    let neighbors = getNeighbors(...curr, graph)
+
+    neighbors.forEach(neighbor=>{
+      if(!visited.has(coords(...neighbor))){
+        stack.push(neighbor)
+        visited.add(coords(...neighbor))
+      }
+    })
+
+  }
+
+    return size;
   // Pop the first node
 
   // DO THE THING (increment size by 1)
@@ -70,21 +91,10 @@ function islandSize(row, col, graph) {
   // HINT: This is what your helper function `getNeighbors` is for
   // HINT: Remember, you're storing your visited nodes as strings!
 
-  // return size
+  return size
 
   // Your code here
 }
-
-  /*
-        0, 1, 2, 3, 4
-
-      [ 0, 1, 0, 0, 1 ]  0
-      [ 1, 0, 0, 0, 1 ]  1
-      [ 1, 1, 0, 1, 1 ]  2
-      [ 0, 1, 1, 0, 0 ]  3
-      [ 0, 0, 0, 0, 0 ]  4
-
-    */
 
 const graph = [
   [0, 1, 0, 0, 1],
@@ -98,3 +108,12 @@ getNeighbors(1, 4, graph);
 
 
 module.exports = [getNeighbors, islandSize];
+  /*
+        0, 1, 2, 3, 4
+
+      [ 0, 1, 0, 0, 1 ]  0
+      [ 1, 0, 0, 0, 1 ]  1
+      [ 1, 1, 0, 1, 1 ]  2
+      [ 0, 1, 1, 0, 0 ]  3
+      [ 0, 0, 0, 0, 0 ]  4
+*/
