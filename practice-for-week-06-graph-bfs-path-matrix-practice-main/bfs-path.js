@@ -15,7 +15,7 @@ function findNeighbors(node, matrix) {
     result.push([row, col - 1]);
   }
   //Right
-  if (matrix[row, col + 1] &&matrix[row][col + 1]) {
+  if (matrix[row, col + 1] && matrix[row][col + 1]) {
     result.push([row, col + 1]);
   }
   return result;
@@ -23,24 +23,26 @@ function findNeighbors(node, matrix) {
 
 function bfsPath(matrix, startNode, endValue) {
 
-  let queue = [[startNode]];
+  let queue = [startNode];
   let visited = new Set();
-
+  let nodes = [];
+  visited.add(startNode.toString())
 
   while (queue.length){
-    debugger
-    let curr = queue.shift();
-    let el = curr[curr.length - 1];
+    //let cPath = queue.shift();
+    let cNode = queue.shift();//cPath[cPath.length - 1];
+    nodes.push(cNode);
 
-    if(matrix[el[0]][el[1]] === endValue) return curr;
-    visited.add(el.toString());
-    let neighbors = findNeighbors(el, matrix);
+    if(matrix[cNode[0]][cNode[1]] === endValue) return nodes;
+    let neighbors = findNeighbors(cNode, matrix);
 
     neighbors.forEach(neighbor => {
       if(!visited.has(neighbor.toString())){
-        queue.push([...curr, neighbor]);
+        //queue.push([...cPath, neighbor]);
+        queue.push(neighbor)
+        visited.add(neighbor.toString());
       }
-    })
+    });
   }
   return false;
 }
